@@ -1,6 +1,6 @@
 import requests, telebot, time, os, traceback
 
-os.chdir('Eschool')
+os.chdir('EschoolBot')
 
 bot = telebot.TeleBot(open('bothash.txt', 'r').readline().rstrip())
 

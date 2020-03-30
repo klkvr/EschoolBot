@@ -2,7 +2,7 @@ import requests, os
 import telebot, time, codecs
 
 
-os.chdir('Eschool')
+os.chdir('EschoolBot')
 period_const = '145630'
 def save_marks(marks):
     f = codecs.open('prevmarks.txt', 'w')
