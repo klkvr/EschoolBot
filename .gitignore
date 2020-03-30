@@ -3,3 +3,4 @@ pal.txt
 lm.txt
 prevmarks.txt
 bothash.txt
+__pycache__/*
