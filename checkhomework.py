@@ -102,5 +102,5 @@ for user in users_data:
             print('login err', user)
     except:
         print('err', user)
-        print(traceback.format_exc())
+        bot.send_message('@eschool239boterrors', traceback.format_exc())
 save_diary(prev_diary)
