@@ -7,4 +7,6 @@ prevdiary.txt
 hwoff.txt
 *.swp
 *.swp.*
+*.save
+*.save.*
 __pycache__/*
