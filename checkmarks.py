@@ -65,13 +65,11 @@ for user in users_data:
                                         flag = 1
                                     except:
                                         flag = 1
-                                    save_marks(prev_marks)
                             if not flag:
                                 try:
                                     bot.send_message(user, 'Новая оценка:\n*' + mark[1]['unit'] + '*\n_' + mark[1]['name'] + '_\nЗначение: ' + str(mark[1]['val']) + '\nКоэффициент: ' + str(mark[1]['weight']) + '\nСредний балл: ' + str(round(averages[mark[1]['unit']], 2)), parse_mode="Markdown")
                                 except:
                                     flag = flag
-                                save_marks(prev_marks)
                     for prev_mark in prev_marks[user]:
                         if prev_mark not in marks[user]:
                             flag = 0
@@ -83,7 +81,6 @@ for user in users_data:
                                     bot.send_message(user, 'Оценка удалена:\n*' + prev_mark[1]['unit'] + '*\n_' + prev_mark[1]['name'] + '_\nЗначение: ' + str(prev_mark[1]['val']) + '\nКоэффициент: ' + str(prev_mark[1]['weight']) + '\nСредний балл: ' + str(round(averages[prev_mark[1]['unit']], 2)), parse_mode="Markdown")
                                 except:
                                     flag = flag
-                                save_marks(prev_marks)
             prev_marks[user] = marks[user]
             save_marks(prev_marks)
         else:
