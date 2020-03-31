@@ -4,4 +4,6 @@ lm.txt
 prevmarks.txt
 bothash.txt
 prevdiary.txt
+*.swp
+*.swp.*
 __pycache__/*
