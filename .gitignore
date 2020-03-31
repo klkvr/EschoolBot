@@ -6,6 +6,6 @@ bothash.txt
 prevdiary.txt
 *.swp
 *.swp.*
-*.*.sawe
-*.sawe.*
+*.save
+*.save.*
 __pycache__/*
