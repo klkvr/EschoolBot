@@ -11,7 +11,6 @@ def save_marks(marks):
 
 
 bot = telebot.TeleBot(open('bothash.txt', 'r').readline().rstrip())
-cur = {int(i.rstrip().split()[0]): int(i.rstrip().split()[1]) for i in open('cur.txt', 'r')}
 users_data = {int(i.rstrip().split()[0]): {'login_data':
                     {'username': i.rstrip().split()[1:-2], 'password': i.rstrip().split()[-2]},
                     'id': int(i.rstrip().split()[-1])} for i in open('pal.txt', 'r')}

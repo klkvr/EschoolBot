@@ -1,11 +1,17 @@
 
-import requests, time, codecs
+import requests, time, codecs, traceback
 
 users_data = {int(i.rstrip().split()[0]): {'login_data':
                                                {'username': i.rstrip().split()[1:-2],
                                                 'password': i.rstrip().split()[-2]},
                                            'id': int(i.rstrip().split()[-1])} for i in open('pal.txt', 'r')}
 
+for i in users_data:
+    s = ''
+    for j in users_data[i]['login_data']['username']:
+        s += j + ' '
+    s = s[:-1]
+    users_data[i]['login_data']['username'] = s
 user_id = 410821501
 diary = {}
 for user in users_data:
@@ -26,6 +32,7 @@ for user in users_data:
                 diary[user][date][unit].extend([{'text': elem['text'], 'file': elem['file']} for elem in j['variant']])
     except:
         print('err', user)
+        print(traceback.format_exc())
 f = codecs.open('prevhomework.txt', 'w')
 print(diary, file=f)
 f.close()
