@@ -168,7 +168,6 @@ def inline(query):
             date = process_calendar_selection(bot, query)
             if date[0] == True:
                 timee = int(date[1].timestamp())
-                pas = '0bb601a607dc3c62d5afcf924adb13874ffeac877e1fee308ec4ebcfe26b0dbe'
                 s = requests.Session()
                 l = s.post('https://app.eschool.center/ec-server/login', data=users_data[query.from_user.id]['login_data'])
                 ti = time.ctime(timee).split()[:3]
