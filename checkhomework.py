@@ -67,7 +67,7 @@ for user in users_data:
                                             if user not in hwoff:
                                                 ti = time.ctime(date).split()[:3]
                                                 t = week[ti[0]] + ', ' + ti[2] + ' ' + month[ti[1]]
-                                                msg = 'Новое домашнее задание по предмету *' + unit + '* на ' + t + ':\n' + hw['text']
+                                                msg = 'Новое домашнее задание по предмету *' + unit + '* на ' + t + ':\n' + hw['text'] + '\n\n/off_homework - отключить уведомления о домашних заданиях'
                                                 bot.send_message(user, msg, parse_mode="Markdown")
                                                 for file in hw['file']:
                                                     id = file['id']
@@ -84,7 +84,7 @@ for user in users_data:
                                             ti = time.ctime(date).split()[:3]
                                             t = week[ti[0]] + ', ' + ti[2] + ' ' + month[ti[1]]
                                             msg = 'Новое домашнее задание по предмету *' + unit + '* на ' + t + ':\n' + hw[
-                                                'text']
+                                                'text'] + '\n\n/off_homework - отключить уведомления о домашних заданиях'
                                             bot.send_message(user, msg, parse_mode="Markdown")
                                             for file in hw['file']:
                                                 id = file['id']
