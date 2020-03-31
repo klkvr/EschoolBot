@@ -53,6 +53,35 @@ def start(message):
     except:
         bot.send_message('@eschool239boterrors', traceback.format_exc())
 
+@bot.message_handler(commands=['off_homework'])
+def off_homework(message):
+    try:
+        hwoff = [int(i.rsrip()) for i in open('hwoff.txt', 'r')]
+        if message.chat.id not in hwoff:
+            hwoff.append(message.chat.id)
+        f = open('hwoff.txt', 'w')
+        for i in hwoff:
+            print(i, file=f)
+        f.close()
+        bot.send_message(message.chat.id, 'Готово! Теперь ты не будешь получать уведомления о новых домашних заданиях')
+    except:
+        bot.send_message('@eschool239boterrors', traceback.format_exc())
+
+@bot.message_handler(commands=['on_homework'])
+def on_homework(message):
+    try:
+        hwoff = [int(i.rsrip()) for i in open('hwoff.txt', 'r')]
+        if message.chat.id in hwoff:
+            for i in range(len(hwoff)):
+                if hwoff[i] == message.chat.id:
+                    hwoff.pop(i)
+            f = open('hwoff.txt', 'w')
+            for i in hwoff:
+                print(i, file=f)
+            f.close()
+        bot.send_message(message.chat.id, 'Готово! Теперь ты будешь получать уведомления о новых домашних заданиях')
+    except:
+        bot.send_message('@eschool239boterrors', traceback.format_exc())
 
 @bot.message_handler(commands=['calculate'])
 def calculate(message):
@@ -207,7 +236,7 @@ def get_homework(message):
             bot.send_message(message.chat.id, 'Сначала войди в аккаунт\n/set_account - подключить аккаунт')
         else:
             kb = create_calendar()
-            bot.send_message(message.chat.id, 'На какой день вы хотите получить домашнее задание?', reply_markup=kb)
+            bot.send_message(message.chat.id, 'На какой день ты хочешь получить домашнее задание?', reply_markup=kb)
     except:
         bot.send_message('@eschool239boterrors', traceback.format_exc())
 

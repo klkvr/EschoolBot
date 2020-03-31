@@ -11,6 +11,7 @@ bot = telebot.TeleBot(open('bothash.txt', 'r').readline().rstrip())
 
 week = {'Mon': 'Понедельник', 'Tue': 'Вторник', 'Wed': 'Среду', 'Thu': 'Четверг', 'Fri': 'Пятницу', 'Sat': 'Субботу', 'Sun': 'Воскресенье'}
 month = {'Mar': 'Марта', 'Apr': 'Апреля', 'May': 'Мая', 'Sep': 'Сентября', 'Nov': 'Ноября', 'Dec': 'Декабря', 'Jan': 'Января', 'Feb': 'Февраля'}
+hwoff = [int(i.rsrip()) for i in open('hwoff.txt', 'r')]
 users_data = {int(i.rstrip().split()[0]): {'login_data':
                                                {'username': i.rstrip().split()[1:-2],
                                                 'password': i.rstrip().split()[-2]},
@@ -63,35 +64,37 @@ for user in users_data:
                                 if unit in prev_diary[user][date]:
                                     for hw in diary[user][date][unit]:
                                         if hw not in prev_diary[user][date][unit]:
+                                            if user not in hwoff:
+                                                ti = time.ctime(date).split()[:3]
+                                                t = week[ti[0]] + ', ' + ti[2] + ' ' + month[ti[1]]
+                                                msg = 'Новое домашнее задание по предмету *' + unit + '* на ' + t + ':\n' + hw['text']
+                                                bot.send_message(user, msg, parse_mode="Markdown")
+                                                for file in hw['file']:
+                                                    id = file['id']
+                                                    name = f['fileName']
+                                                    f = open(name, 'wb')
+                                                    f.write(s.get('https://app.eschool.center/ec-server/files/' + str(id), cookies=s.cookies).content)
+                                                    f.close()
+                                                    bot.send_document(user, open(name, 'rb'))
+                                                    os.remove(name)
+                                                print('new homework', unit, date, hw)
+                                else:
+                                    for hw in diary[user][date][unit]:
+                                        if user not in hwoff:
                                             ti = time.ctime(date).split()[:3]
                                             t = week[ti[0]] + ', ' + ti[2] + ' ' + month[ti[1]]
-                                            msg = 'Новое домашнее задание по предмету *' + unit + '* на ' + t + ':\n' + hw['text']
+                                            msg = 'Новое домашнее задание по предмету *' + unit + '* на ' + t + ':\n' + hw[
+                                                'text']
                                             bot.send_message(user, msg, parse_mode="Markdown")
                                             for file in hw['file']:
                                                 id = file['id']
                                                 name = f['fileName']
                                                 f = open(name, 'wb')
-                                                f.write(s.get('https://app.eschool.center/ec-server/files/' + str(id), cookies=s.cookies).content)
+                                                f.write(s.get('https://app.eschool.center/ec-server/files/' + str(id),
+                                                              cookies=s.cookies).content)
                                                 f.close()
                                                 bot.send_document(user, open(name, 'rb'))
                                                 os.remove(name)
-                                            print('new homework', unit, date, hw)
-                                else:
-                                    for hw in diary[user][date][unit]:
-                                        ti = time.ctime(date).split()[:3]
-                                        t = week[ti[0]] + ', ' + ti[2] + ' ' + month[ti[1]]
-                                        msg = 'Новое домашнее задание по предмету *' + unit + '* на ' + t + ':\n' + hw[
-                                            'text']
-                                        bot.send_message(user, msg, parse_mode="Markdown")
-                                        for file in hw['file']:
-                                            id = file['id']
-                                            name = f['fileName']
-                                            f = open(name, 'wb')
-                                            f.write(s.get('https://app.eschool.center/ec-server/files/' + str(id),
-                                                          cookies=s.cookies).content)
-                                            f.close()
-                                            bot.send_document(user, open(name, 'rb'))
-                                            os.remove(name)
                                         print('new homework', unit, date, hw)
             prev_diary[user] = diary[user]
             save_diary(prev_diary)
