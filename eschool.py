@@ -3,6 +3,7 @@ from hashlib import sha256
 from telebot import types
 from telegramcalendar import create_calendar, process_calendar_selection
 
+print(1)
 os.chdir('EschoolBot')
 period_const = '145630'
 def save_users_data(users_data):
