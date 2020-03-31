@@ -11,7 +11,7 @@ bot = telebot.TeleBot(open('bothash.txt', 'r').readline().rstrip())
 
 week = {'Mon': 'Понедельник', 'Tue': 'Вторник', 'Wed': 'Среду', 'Thu': 'Четверг', 'Fri': 'Пятницу', 'Sat': 'Субботу', 'Sun': 'Воскресенье'}
 month = {'Mar': 'Марта', 'Apr': 'Апреля', 'May': 'Мая', 'Sep': 'Сентября', 'Nov': 'Ноября', 'Dec': 'Декабря', 'Jan': 'Января', 'Feb': 'Февраля'}
-hwoff = [int(i.rsrip()) for i in open('hwoff.txt', 'r')]
+hwoff = [int(i.rstrip()) for i in open('hwoff.txt', 'r')]
 users_data = {int(i.rstrip().split()[0]): {'login_data':
                                                {'username': i.rstrip().split()[1:-2],
                                                 'password': i.rstrip().split()[-2]},
@@ -77,7 +77,7 @@ for user in users_data:
                                                     f.close()
                                                     bot.send_document(user, open(name, 'rb'))
                                                     os.remove(name)
-                                                print('new homework', unit, date, hw)
+                                            print('new homework', unit, date, hw)
                                 else:
                                     for hw in diary[user][date][unit]:
                                         if user not in hwoff:

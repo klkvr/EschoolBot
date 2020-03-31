@@ -56,7 +56,7 @@ def start(message):
 @bot.message_handler(commands=['off_homework'])
 def off_homework(message):
     try:
-        hwoff = [int(i.rsrip()) for i in open('hwoff.txt', 'r')]
+        hwoff = [int(i.rstrip()) for i in open('hwoff.txt', 'r')]
         if message.chat.id not in hwoff:
             hwoff.append(message.chat.id)
         f = open('hwoff.txt', 'w')
@@ -70,7 +70,7 @@ def off_homework(message):
 @bot.message_handler(commands=['on_homework'])
 def on_homework(message):
     try:
-        hwoff = [int(i.rsrip()) for i in open('hwoff.txt', 'r')]
+        hwoff = [int(i.rstrip()) for i in open('hwoff.txt', 'r')]
         if message.chat.id in hwoff:
             for i in range(len(hwoff)):
                 if hwoff[i] == message.chat.id:
