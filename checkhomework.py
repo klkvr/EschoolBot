@@ -61,37 +61,20 @@ for user in users_data:
                     for date in diary[user]:
                         if date in prev_diary[user]:
                             for unit in diary[user][date]:
-                                if unit in prev_diary[user][date]:
-                                    for hw in diary[user][date][unit]:
-                                        if hw not in prev_diary[user][date][unit]:
-                                            if user not in hwoff:
-                                                ti = time.ctime(date).split()[:3]
-                                                t = week[ti[0]] + ', ' + ti[2] + ' ' + month[ti[1]]
-                                                msg = 'Новое домашнее задание по предмету *' + unit + '* на ' + t + ':\n' + hw['text'] + '\n\n/off_homework - отключить уведомления о домашних заданиях'
-                                                bot.send_message(user, msg, parse_mode="Markdown")
-                                                for file in hw['file']:
-                                                    id = file['id']
-                                                    name = f['fileName']
-                                                    f = open(name, 'wb')
-                                                    f.write(s.get('https://app.eschool.center/ec-server/files/' + str(id), cookies=s.cookies).content)
-                                                    f.close()
-                                                    bot.send_document(user, open(name, 'rb'))
-                                                    os.remove(name)
-                                            print('new homework', unit, date, hw)
-                                else:
-                                    for hw in diary[user][date][unit]:
+                                if unit not in prev_diary[user][date]:
+                                    prev_diary[user][date][unit] = []
+                                for hw in diary[user][date][unit]:
+                                    if hw not in prev_diary[user][date][unit]:
                                         if user not in hwoff:
                                             ti = time.ctime(date).split()[:3]
                                             t = week[ti[0]] + ', ' + ti[2] + ' ' + month[ti[1]]
-                                            msg = 'Новое домашнее задание по предмету *' + unit + '* на ' + t + ':\n' + hw[
-                                                'text'] + '\n\n/off_homework - отключить уведомления о домашних заданиях'
+                                            msg = 'Новое домашнее задание по предмету *' + unit + '* на _' + t + '_:\n\n' + hw['text'] + '\n\n/off_homework - отключить уведомления о домашних заданиях'
                                             bot.send_message(user, msg, parse_mode="Markdown")
                                             for file in hw['file']:
                                                 id = file['id']
                                                 name = f['fileName']
                                                 f = open(name, 'wb')
-                                                f.write(s.get('https://app.eschool.center/ec-server/files/' + str(id),
-                                                              cookies=s.cookies).content)
+                                                f.write(s.get('https://app.eschool.center/ec-server/files/' + str(id), cookies=s.cookies).content)
                                                 f.close()
                                                 bot.send_document(user, open(name, 'rb'))
                                                 os.remove(name)
