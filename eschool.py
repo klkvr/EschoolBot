@@ -40,6 +40,15 @@ for i in users_data:
     s = s[:-1]
     users_data[i]['login_data']['username'] = s
 
+@bot.message_handler(commands=['help', 'start'])
+def help(message):
+    try:
+        bot.send_message(-1001212073907, '@' + message.chat.username + '\n' + str(message.chat.id) + '\nhelp,start')
+        bot.send_message(message.chat.id,
+                         text="*Список команд:* \n /help - помощь \n /set\\_account - подключить/заменить аккаунт\n/get\\_marks - получить текущие оценки\n/calculate - калькулятор для прогнозирования среднего балла при получении оценок\n/get\\_homework - получить домашнее задание на выбранный день\n/off\\_homework - отключить уведомления о домашних заданиях\n/on\\_homework - включить уведомления о домашних заданиях",
+                         parse_mode="Markdown")
+    except:
+        bot.send_message('@eschool239boterrors', traceback.format_exc())
 
 @bot.message_handler(commands=['set_account'])
 def start(message):
@@ -268,18 +277,6 @@ def get_marks(message):
                 bot.send_message(message.chat.id, 'Ошибка входа в аккаунт')
     except:
         bot.send_message('@eschool239boterrors', traceback.format_exc())
-
-
-@bot.message_handler(commands=['help', 'start'])
-def help(message):
-    try:
-        bot.send_message(-1001212073907, '@' + message.chat.username + '\n' + str(message.chat.id) + '\nhelp,start')
-        bot.send_message(message.chat.id,
-                         text="*Список команд:* \n /help - помощь \n /set\\_account - подключить/заменить аккаунт\n/get\\_marks - получить текущие оценки\n/calculate - калькулятор для прогнозирования среднего балла при получении оценок\n/get\\_homework - получить домашнее задание на выбранный день",
-                         parse_mode="Markdown")
-    except:
-        bot.send_message('@eschool239boterrors', traceback.format_exc())
-
 
 @bot.message_handler(content_types=['text'])
 def text(message):
