@@ -43,7 +43,7 @@ for i in users_data:
 @bot.message_handler(commands=['help', 'start'])
 def help(message):
     try:
-        bot.send_message(-1001212073907, '@' + message.chat.username + '\n' + str(message.chat.id) + '\nhelp,start')
+        bot.send_message(-1001212073907, '@' + str(message.chat.username) + '\n' + str(message.chat.id) + '\nhelp,start')
         bot.send_message(message.chat.id,
                          text="*Список команд:* \n /help - помощь \n /set\\_account - подключить/заменить аккаунт\n/get\\_marks - получить текущие оценки\n/calculate - калькулятор для прогнозирования среднего балла при получении оценок\n/get\\_homework - получить домашнее задание на выбранный день\n/off\\_homework - отключить уведомления о домашних заданиях\n/on\\_homework - включить уведомления о домашних заданиях",
                          parse_mode="Markdown")
@@ -53,7 +53,7 @@ def help(message):
 @bot.message_handler(commands=['set_account'])
 def start(message):
     try:
-        bot.send_message(-1001212073907, '@' + message.chat.username + '\n' + str(message.chat.id) + '\nset_account')
+        bot.send_message(-1001212073907, '@' + str(message.chat.username) + '\n' + str(message.chat.id) + '\nset_account')
         bot.send_message(message.chat.id, 'Пришли свой логин')
         cur[message.chat.id] = 1
         users_data[message.chat.id] = {'login_data': {'username': '-1', 'password': '-1'}, 'id': -1}
@@ -65,6 +65,7 @@ def start(message):
 @bot.message_handler(commands=['off_homework'])
 def off_homework(message):
     try:
+        bot.send_message(-1001212073907, '@' + str(message.chat.username) + '\n' + str(message.chat.id) + '\noff_homework')
         hwoff = [int(i.rstrip()) for i in open('hwoff.txt', 'r')]
         if message.chat.id not in hwoff:
             hwoff.append(message.chat.id)
@@ -79,6 +80,7 @@ def off_homework(message):
 @bot.message_handler(commands=['on_homework'])
 def on_homework(message):
     try:
+        bot.send_message(-1001212073907, '@' + str(message.chat.username) + '\n' + str(message.chat.id) + '\non_homework')
         hwoff = [int(i.rstrip()) for i in open('hwoff.txt', 'r')]
         if message.chat.id in hwoff:
             for i in range(len(hwoff)):
@@ -95,7 +97,7 @@ def on_homework(message):
 @bot.message_handler(commands=['calculate'])
 def calculate(message):
     try:
-        bot.send_message(-1001212073907, '@' + message.chat.username + '\n' + str(message.chat.id) + '\ncalculate')
+        bot.send_message(-1001212073907, '@' + str(message.chat.username) + '\n' + str(message.chat.id) + '\ncalculate')
         s = requests.session()
         if message.chat.id not in users_data:
             bot.send_message(message.chat.id, 'Сначала войди в аккаунт\n/set_account - подключить аккаунт')
@@ -240,7 +242,7 @@ def inline(query):
 @bot.message_handler(commands=['get_homework'])
 def get_homework(message):
     try:
-        bot.send_message(-1001212073907, '@' + message.chat.username + '\n' + str(message.chat.id) + '\nget_homework')
+        bot.send_message(-1001212073907, '@' + str(message.chat.username) + '\n' + str(message.chat.id) + '\nget_homework')
         if message.chat.id not in cur or cur[message.chat.id] != 3:
             bot.send_message(message.chat.id, 'Сначала войди в аккаунт\n/set_account - подключить аккаунт')
         else:
@@ -252,7 +254,7 @@ def get_homework(message):
 @bot.message_handler(commands=['get_marks'])
 def get_marks(message):
     try:
-        bot.send_message(-1001212073907, '@' + message.chat.username + '\n' + str(message.chat.id) + '\nget_marks')
+        bot.send_message(-1001212073907, '@' + str(message.chat.username) + '\n' + str(message.chat.id) + '\nget_marks')
         if message.chat.id not in cur or cur[message.chat.id] != 3:
             bot.send_message(message.chat.id, 'Сначала войди в аккаунт\n/set_account - подключить аккаунт')
         else:
