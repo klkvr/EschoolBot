@@ -63,15 +63,21 @@ for user in users_data:
                                             ti = time.ctime(date).split()[:3]
                                             t = week[ti[0]] + ', ' + ti[2] + ' ' + month[ti[1]]
                                             msg = 'Новое домашнее задание по предмету *' + unit + '* на _' + t + '_:\n\n' + hw['text'] + '\n\n/off\\_homework - отключить уведомления о домашних заданиях'
-                                            bot.send_message(user, msg, parse_mode="Markdown")
+                                            try:
+                                                bot.send_message(user, msg, parse_mode="Markdown")
+                                            except:
+                                                msg = msg
                                             for file in hw['file']:
                                                 id = file['id']
                                                 name = file['fileName']
                                                 f = open(name, 'wb')
                                                 f.write(s.get('https://app.eschool.center/ec-server/files/' + str(id), cookies=s.cookies).content)
                                                 f.close()
-                                                bot.send_document(user, open(name, 'rb'))
-                                                os.remove(name)
+                                                try:
+                                                    bot.send_document(user, open(name, 'rb'))
+                                                    os.remove(name)
+                                                except:
+                                                    os.remove(name)
                                         print('new homework', unit, date, hw)
             prev_diary[user] = diary[user]
             save_diary(prev_diary)
