@@ -84,6 +84,8 @@ for user in users_data:
             save_marks(prev_marks)
         else:
             print('err')
+        time.sleep(1)
     except:
         bot.send_message('@eschool239boterrors', traceback.format_exc())
+        time.sleep(1)
 save_marks(prev_marks)

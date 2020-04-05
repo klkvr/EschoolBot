@@ -33,14 +33,7 @@ for user in users_data:
         print(user)
         diary[user] = {}
         s = requests.Session()
-        enter = s.post('https://app.eschool.center/ec-server/login', data=users_data[user]['login_data'])
-        attempts = 0
-        while enter.status_code != 200 and attempts < 3:
-            time.sleep(1)
-            enter = s.post('https://app.eschool.center/ec-server/login', data=users_data[user]['login_data'])
-            attempts += 1
-
-        if enter.status_code == 200:
+        if s.post('https://app.eschool.center/ec-server/login', data=users_data[user]['login_data']).status_code == 200:
             timee = (int(time.time()) // 86400) * 86400
             getdiary = requests.get('https://app.eschool.center/ec-server/student/diary?userId=' + str(users_data[user]['id']) + '&d1=' + str(timee * 1000) + '&d2=' + str((timee + 86400 * 14) * 1000 - 1), cookies=s.cookies).json()['lesson']
             print('https://app.eschool.center/ec-server/student/diary?userId=' + str(users_data[user]['id']) + '&d1=' + str(timee * 1000) + '&d2=' + str((timee + 86400 * 14) * 1000 - 1))
@@ -84,7 +77,9 @@ for user in users_data:
             save_diary(prev_diary)
         else:
             print('login err', user)
+        time.sleep(1)
     except:
         print('err', user)
         bot.send_message('@eschool239boterrors', traceback.format_exc())
+        time.sleep(1)
 save_diary(prev_diary)
