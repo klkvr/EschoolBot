@@ -66,7 +66,7 @@ for user in users_data:
                                             bot.send_message(user, msg, parse_mode="Markdown")
                                             for file in hw['file']:
                                                 id = file['id']
-                                                name = f['fileName']
+                                                name = file['fileName']
                                                 f = open(name, 'wb')
                                                 f.write(s.get('https://app.eschool.center/ec-server/files/' + str(id), cookies=s.cookies).content)
                                                 f.close()
