@@ -30,6 +30,7 @@ except:
 diary = {}
 for user in users_data:
     try:
+        print(user)
         diary[user] = {}
         s = requests.Session()
         enter = s.post('https://app.eschool.center/ec-server/login', data=users_data[user]['login_data'])
@@ -68,7 +69,7 @@ for user in users_data:
                                         if user not in hwoff:
                                             ti = time.ctime(date).split()[:3]
                                             t = week[ti[0]] + ', ' + ti[2] + ' ' + month[ti[1]]
-                                            msg = 'Новое домашнее задание по предмету *' + unit + '* на _' + t + '_:\n\n' + hw['text'] + '\n\n/off_homework - отключить уведомления о домашних заданиях'
+                                            msg = 'Новое домашнее задание по предмету *' + unit + '* на _' + t + '_:\n\n' + hw['text'] + '\n\n/off\\_homework - отключить уведомления о домашних заданиях'
                                             bot.send_message(user, msg, parse_mode="Markdown")
                                             for file in hw['file']:
                                                 id = file['id']
