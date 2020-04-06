@@ -36,7 +36,9 @@ for user in users_data:
         if s.post('https://app.eschool.center/ec-server/login', data=users_data[user]['login_data']).status_code == 200:
             timee = (int(time.time()) // 86400) * 86400
             getdiary = requests.get('https://app.eschool.center/ec-server/student/diary?userId=' + str(users_data[user]['id']) + '&d1=' + str(timee * 1000) + '&d2=' + str((timee + 86400 * 14) * 1000 - 1), cookies=s.cookies).json()['lesson']
-            print('https://app.eschool.center/ec-server/student/diary?userId=' + str(users_data[user]['id']) + '&d1=' + str(timee * 1000) + '&d2=' + str((timee + 86400 * 14) * 1000 - 1))
+            while getdiary.status_code != 200:
+                getdiary = requests.get('https://app.eschool.center/ec-server/student/diary?userId=' + str(users_data[user]['id']) + '&d1=' + str(timee * 1000) + '&d2=' + str((timee + 86400 * 14) * 1000 - 1), cookies=s.cookies).json()['lesson']
+                time.sleep(2)
             for i in getdiary:
                 date = i['date'] // 1000
                 unit = i['unit']['name']
