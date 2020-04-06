@@ -35,10 +35,11 @@ for user in users_data:
         s = requests.Session()
         if s.post('https://app.eschool.center/ec-server/login', data=users_data[user]['login_data']).status_code == 200:
             timee = (int(time.time()) // 86400) * 86400
-            getdiary = requests.get('https://app.eschool.center/ec-server/student/diary?userId=' + str(users_data[user]['id']) + '&d1=' + str(timee * 1000) + '&d2=' + str((timee + 86400 * 14) * 1000 - 1), cookies=s.cookies).json()['lesson']
-            while getdiary.status_code != 200:
-                getdiary = requests.get('https://app.eschool.center/ec-server/student/diary?userId=' + str(users_data[user]['id']) + '&d1=' + str(timee * 1000) + '&d2=' + str((timee + 86400 * 14) * 1000 - 1), cookies=s.cookies).json()['lesson']
+            ggetdiary = requests.get('https://app.eschool.center/ec-server/student/diary?userId=' + str(users_data[user]['id']) + '&d1=' + str(timee * 1000) + '&d2=' + str((timee + 86400 * 14) * 1000 - 1), cookies=s.cookies)
+            while ggetdiary.status_code != 200:
+                ggetdiary = requests.get('https://app.eschool.center/ec-server/student/diary?userId=' + str(users_data[user]['id']) + '&d1=' + str(timee * 1000) + '&d2=' + str((timee + 86400 * 14) * 1000 - 1), cookies=s.cookies)
                 time.sleep(2)
+            getdiary = ggetdiary.json()['lesson']
             for i in getdiary:
                 date = i['date'] // 1000
                 unit = i['unit']['name']
