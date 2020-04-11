@@ -5,7 +5,7 @@ from telegramcalendar import create_calendar, process_calendar_selection
 
 
 os.chdir('EschoolBot')
-period_const = '145630'
+period_const = '145632'
 def save_users_data(users_data):
     f = open('pal.txt', 'w')
     for i in users_data:
