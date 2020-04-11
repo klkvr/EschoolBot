@@ -86,9 +86,9 @@ for user in users_data:
             save_diary(prev_diary)
         else:
             print('login err', user)
-        time.sleep(1)
+        time.sleep(5)
     except:
         print('err', user)
         bot.send_message('@eschool239boterrors', traceback.format_exc())
-        time.sleep(1)
+        time.sleep(5)
 save_diary(prev_diary)

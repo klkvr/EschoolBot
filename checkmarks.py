@@ -1,4 +1,4 @@
-import requests, os
+import requests, os, traceback
 import telebot, time, codecs
 
 
