@@ -220,8 +220,7 @@ def inline(query):
                 for i in diary:
                     for j in i['part']:
                         if 'variant' in j and len(j['variant']):
-                            bot.send_message(query.from_user.id, '*' + i['unit']['name'] + '*\n' + j['variant'][0]['text'],
-                                             parse_mode="Markdown")
+                            bot.send_message(query.from_user.id, i['unit']['name'] + '\n' + j['variant'][0]['text'])
                             cnt += 1
                             for f in j['variant'][0]['file']:
                                 id = f['id']
