@@ -42,6 +42,7 @@ for i in users_data:
 
 @bot.message_handler(commands=['help', 'start'])
 def help(message):
+    user = BotUser(message.chat.id)
     try:
         bot.send_message(-1001212073907, '@' + str(message.chat.username) + '\n' + str(message.chat.id) + '\nhelp,start')
         bot.send_message(message.chat.id,
