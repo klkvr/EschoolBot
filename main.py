@@ -79,6 +79,7 @@ def text(message):
             log_in_attempt = user.log_in(1)
             if log_in_attempt['logged_in']:
                 bot.send_message(user.id, success_login_format.format(user=user), parse_mode="HTML")
+                bot.send_message(410821501, f'Новый пользователь: {user.real_name}')
                 user.logged_in = True
             elif log_in_attempt['error'] == 'teacher':
                 bot.send_message(user.id, sorry_for_teachers)
