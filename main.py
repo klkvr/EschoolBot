@@ -85,6 +85,7 @@ def text(message):
             else:
                 bot.send_message(user.id, unknown_error)
             bot.delete_message(user.id, message_to_delete.message_id)
+            user.state = 'none'
     except:
         bot.send_message('@eschool239boterrors', traceback.format_exc())
 bot.polling()
