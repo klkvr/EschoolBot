@@ -18,7 +18,7 @@ def send_period_marks(user_id, marks):
         msg += f'{i+1}. <b>{marks[i]["unit_name"]}:</b>\nСредний балл: {marks[i]["average"]}\nИтог: {marks[i]["total"]}\n\n'
     bot.send_message(user.id, msg, parse_mode="HTML")
 
-@bot.message_handler(commands=['start'])
+@bot.message_handler(commands=['start', 'help'])
 def start(message):
     user = BotUser(message.chat.id)
     user.state = 'none'
