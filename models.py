@@ -1,10 +1,12 @@
 import redis
 import json
+import traceback
 import os
+from html2text import html2text
+from telegramcalendar import *
 os.chdir('/home/ubuntu/EschoolBot')
 
 import requests
-import time
 from datetime import datetime
 from config import *
 
@@ -85,4 +87,18 @@ class BotUser(object):
                 marks.append({'unit_id': elem['unitId'], 'mark': elem['markVal'], 'weight': elem['mktWt'], 'name': elem['lptName'], 'time': t})
         marks.sort(key=lambda mark: mark['time'])
         return marks
+    
+    def get_homeworks(self, s, homework_day):
+        start_date = homework_day * 1000
+        end_date = start_date + 86400 * 1000 - 1
+        diary = requests.get(f'https://app.eschool.center/ec-server/student/diary?userId={self.eschool_id}&d1={start_date}&d2={end_date}', cookies=s.cookies).json()['lesson']
+        homeworks = []
+        for elem in diary:
+            unit = {'name': elem['unit']['name'], 'id': elem['unit']['id']}
+            for p in elem['part']:
+                if p['name'] == 'Дом. задание':
+                    for variant in p['variant']:
+                        homeworks.append({'unit': unit, 'text': html2text(variant['text'], bodywidth=0), 'files': [{'id': f['id'], 'name': f['fileName']} for f in variant['file']]})
+        return homeworks
+
 

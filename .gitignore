@@ -10,3 +10,7 @@ hwoff.txt
 *.save
 *.save.*
 __pycache__/*
+sendall.py
+eschool.py
+checkhomework.py
+checkmarks.py

@@ -232,6 +232,7 @@ def inline(query):
                                 file.close()
                                 bot.send_document(query.from_user.id, open(name, 'rb'))
                                 os.remove(name)
+                                bot.send_document()
                 if cnt == 0:
                     bot.send_message(query.from_user.id, '_На этот день домашних заданий нет_', parse_mode="Markdown")
     except:
