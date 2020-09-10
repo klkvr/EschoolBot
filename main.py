@@ -12,6 +12,28 @@ from templates import *
 bot = telebot.TeleBot(BOT_HASH)
 
 
+@bot.message_handler(commands=['calculate'])
+def calculate(message):
+    user = BotUser(message.from_user.id)
+    if not user.logged_in:
+        bot.send_message(user.id, log_in_first)
+    else:
+        log_in_attempt = user.log_in()
+        if log_in_attempt['logged_in']:
+            message_to_delete = bot.send_message(user.id, getting_marks)
+            units = user.get_diary_units(log_in_attempt['session'])
+            marks = user.get_marks(log_in_attempt['session'])
+            units_calculate_data = {}
+            for i in range(len(units)):
+                units_calculate_data[units[i]['unit_id']] = {'name': units[i]['unit_name'], 'average': units[i]['average'], 'weight': 0}
+            for mark in marks:
+                units_calculate_data[mark['unit_id']]['weight'] += mark['weight']
+            kb = create_calculate_kb(units_calculate_data)
+            bot.send_message(user.id, calculate_choose_unit, reply_markup=kb)
+            bot.delete_message(chat_id=user.id, message_id=message_to_delete.message_id)
+        else:
+            bot.send_message(user.id, error_logging_in)
+
 def send_period_marks(user_id, marks):
     user = BotUser(user_id)
     msg = ''
@@ -45,22 +67,6 @@ def set_account(message):
     user = BotUser(message.from_user.id)
     bot.send_message(user.id, enter_login)
     user.state = 'enter_login'
-
-"""
-@bot.message_handler(commands=['calculate'])
-def calculate(message):
-    user = BotUser(message.from_user.id)
-    user.state = 'none'
-    bot.send_message(user.id, start_message, parse_mode="HTML")
-    if not user.logged_in:
-        bot.send_message(user.id, log_in_first)
-    else:
-        log_in_attempt = user.log_in()
-        if log_in_attempt['logged_id']:
-            period_marks = user.get_diary_units(log_in_attempt['session'])
-"""
-
-
 
 @bot.message_handler(commands=['get_marks'])
 def get_marks(message):
@@ -125,22 +131,51 @@ def inline(query):
         user = BotUser(query.from_user.id)
         data = query.data
         message_id = query.message.message_id
-        if "IGNORE" in data or "DAY" in data or "PREV-MONTH" in data or "NEXT-MONTH" in data:
-            date = process_calendar_selection(bot, query)
-            if date[0] == True:
-                if user.state == 'get_homework_choose_day':
-                    user.state = 'none'
-                    homework_day = int(date[1].timestamp())
-                    log_in_attempt = user.log_in()
-                    ctime_day = time.ctime(homework_day).split()[:3]
-                    read_day = WEEK[ctime_day[0]] + ', ' + ctime_day[2] + ' ' + MONTH[ctime_day[1]]
-                    msg = f'<b>Домашние задания на {read_day}:</b>'
-                    bot.edit_message_text(text=msg, chat_id=user.id, message_id=message_id, parse_mode="HTML")
-                    if log_in_attempt['logged_in']:
-                        s = log_in_attempt['session']
-                        send_homeworks(user.id, s, user.get_homeworks(s, homework_day))
-                    else:
-                        bot.send_message(user.id, error_logging_in)
+        if 'calc:' in data:
+            unit_name = data.split(':')[1]
+            average = float(data.split(':')[2])
+            weight = float(data.split(':')[3])
+            user.state = f'calculate_choosing_mark:{unit_name}:{average}:{weight}'
+            bot.edit_message_text(chat_id=user.id, message_id=message_id, text=calculate_choose_mark_format.format(unit_name=unit_name, average=average), reply_markup=marks_kb, parse_mode="HTML")
+        elif 'calc_chosen_mark:' in data:
+            if 'calculate_choosing_mark:' in user.state:
+                unit_name = user.state.split(':')[1]
+                average = float(user.state.split(':')[2])
+                weight = float(user.state.split(':')[3])
+                chosen_mark = int(data.split(':')[1])
+                user.state = f'calculate_choosing_weight:{unit_name}:{average}:{weight}:{chosen_mark}'
+                bot.edit_message_text(chat_id=user.id, message_id=message_id, text=calculate_choose_weight_format.format(unit_name=unit_name, average=average), reply_markup=weights_kb, parse_mode="HTML")
+        elif 'calc_chosen_weight:' in data:
+            if 'calculate_choosing_weight:' in user.state:
+                unit_name = user.state.split(':')[1]
+                prev_average = float(user.state.split(':')[2])
+                prev_weight = float(user.state.split(':')[3])
+                chosen_mark = int(user.state.split(':')[4])
+                chosen_weight = float(data.split(':')[1])
+                new_average, new_weight = calc_average_change(prev_average, prev_weight, chosen_mark, chosen_weight)
+                kb = types.InlineKeyboardMarkup()
+                kb.add(types.InlineKeyboardButton(text=calculate_more, callback_data=f'calc:{unit_name}:{new_average}:{new_weight}'))
+                bot.edit_message_text(chat_id=user.id, message_id=message_id, text=calculate_result_format.format(chosen_mark=chosen_mark, chosen_weight=chosen_weight, unit_name=unit_name, prev_average=prev_average, new_average=new_average), reply_markup=kb, parse_mode="HTML")
+        else:
+            if "IGNORE" in data or "DAY" in data or "PREV-MONTH" in data or "NEXT-MONTH" in data:
+                date = process_calendar_selection(bot, query)
+                if date[0] == True:
+                    if user.state == 'get_homework_choose_day':
+                        user.state = 'none'
+                        homework_day = int(date[1].timestamp())
+                        log_in_attempt = user.log_in()
+                        ctime_day = time.ctime(homework_day).split()[:3]
+                        read_day = WEEK[ctime_day[0]] + ', ' + ctime_day[2] + ' ' + MONTH[ctime_day[1]]
+                        msg = f'<b>Домашние задания на {read_day}:</b>'
+                        bot.edit_message_text(text=msg, chat_id=user.id, message_id=message_id, parse_mode="HTML")
+                        if log_in_attempt['logged_in']:
+                            s = log_in_attempt['session']
+                            send_homeworks(user.id, s, user.get_homeworks(s, homework_day))
+                        else:
+                            bot.send_message(user.id, error_logging_in)
+        
     except:
         bot.send_message('@eschool239boterrors', traceback.format_exc())
+
+
 bot.polling()
