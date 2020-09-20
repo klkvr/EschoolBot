@@ -99,7 +99,7 @@ class BotUser(object):
             for p in elem['part']:
                 if p['name'] == 'Дом. задание':
                     for variant in p['variant']:
-                        homeworks.append({'unit': unit, 'text': html2text(variant['text'], bodywidth=0), 'files': [{'id': f['id'], 'name': f['fileName']} for f in variant['file']]})
+                        homeworks.append({'unit': unit, 'text': html2text(variant.get('text', ''), bodywidth=0), 'files': [{'id': f['id'], 'name': f['fileName']} for f in variant['file']]})
         return homeworks
 
 
