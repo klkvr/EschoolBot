@@ -92,6 +92,7 @@ class BotUser(object):
     def get_homeworks(self, s, homework_day):
         start_date = homework_day * 1000
         end_date = start_date + 86400 * 1000 - 1
+        print(start_date, end_date)
         diary = requests.get(f'https://app.eschool.center/ec-server/student/diary?userId={self.eschool_id}&d1={start_date}&d2={end_date}', cookies=s.cookies).json()['lesson']
         homeworks = []
         for elem in diary:
