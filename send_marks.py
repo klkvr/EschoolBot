@@ -25,14 +25,12 @@ for user_id in users:
                     unit_by_id = {}
                     for unit in units:
                         unit_by_id[unit['unit_id']] = {'name': unit['unit_name'], 'average': unit['average']}
-                    if user.last_checked_mark_time == -1:
-                        user.last_checked_mark_time = marks[-1]['time']
-                    else:
+                    if user.last_checked_mark_time != -1:
                         for mark in marks:
                             if mark['time'] > user.last_checked_mark_time:
-                                user.last_checked_mark_time = mark["time"]
                                 msg = f'Новая оценка\n<b>{unit_by_id[mark["unit_id"]]['name']}</b>\n<i>{mark["name"]}</i>\nЗначение: {mark["mark"]}\nКоэффициент: {mark["weight"]}\nСредний балл: {unit_by_id[mark["unit_id"]]['average']}'
                                 bot.send_message(user.id, msg, parse_mode="HTML")
+                    user.last_checked_mark_time = marks[-1]["time"]
     except:
         bot.send_message('@eschool239boterrors', traceback.format_exc())
     time.sleep(0.5)
