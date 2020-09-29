@@ -24,14 +24,14 @@ for user_id in users:
                     units = user.get_diary_units(s)
                     unit_by_id = {}
                     for unit in units:
-                        unit_by_id[unit['unit_id']] = unit['unit_name']
+                        unit_by_id[unit['unit_id']] = {'name': unit['unit_name'], 'average': unit['average']}
                     if user.last_checked_mark_time == -1:
                         user.last_checked_mark_time = marks[-1]['time']
                     else:
                         for mark in marks:
                             if mark['time'] > user.last_checked_mark_time:
                                 user.last_checked_mark_time = mark["time"]
-                                msg = f'Новая оценка\n<b>{unit_by_id[mark["unit_id"]]}</b>\n<i>{mark["name"]}</i>\nЗначение: {mark["mark"]}\nКоэффициент: {mark["weight"]}'
+                                msg = f'Новая оценка\n<b>{unit_by_id[mark["unit_id"]]['name']}</b>\n<i>{mark["name"]}</i>\nЗначение: {mark["mark"]}\nКоэффициент: {mark["weight"]}\nСредний балл: {unit_by_id[mark["unit_id"]]['average']}'
                                 bot.send_message(user.id, msg, parse_mode="HTML")
     except:
         bot.send_message('@eschool239boterrors', traceback.format_exc())

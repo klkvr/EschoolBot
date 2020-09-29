@@ -99,6 +99,7 @@ def get_homework(message):
     except:
         bot.send_message('@eschool239boterrors', traceback.format_exc())
 
+
 @bot.message_handler(content_types=['text'])
 def text(message):
     try:
