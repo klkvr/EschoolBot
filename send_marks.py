@@ -32,7 +32,7 @@ for user_id in users:
                                 bot.send_message(user.id, msg, parse_mode="HTML")
                     user.last_checked_mark_time = marks[-1]["time"]
     except telebot.apihelper.ApiException as exc:
-        print(exc)
+        print('bot was blocked by the user' in exc)
     except:
         bot.send_message('@eschool239boterrors', traceback.format_exc())
     time.sleep(0.5)
