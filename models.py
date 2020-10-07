@@ -3,8 +3,8 @@ import json
 import traceback
 import os
 import time
-from html2text import html2text
 from telegramcalendar import *
+from delete_html import *
 os.chdir('/home/ubuntu/EschoolBot')
 
 import requests
@@ -99,7 +99,7 @@ class BotUser(object):
             for p in elem['part']:
                 if p['name'] == 'Дом. задание' or p['name'] == 'Контрольное д/з':
                     for variant in p['variant']:
-                        homeworks.append({'unit': unit, 'text': html2text(variant.get('text', ''), bodywidth=0), 'files': [{'id': f['id'], 'name': f['fileName']} for f in variant['file']]})
+                        homeworks.append({'unit': unit, 'text': delete_html(variant.get('text', '')), 'files': [{'id': f['id'], 'name': f['fileName']} for f in variant['file']]})
         return homeworks
 
 
