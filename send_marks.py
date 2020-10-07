@@ -31,8 +31,8 @@ for user_id in users:
                                 msg = f'Новая оценка\n<b>{unit_by_id[mark["unit_id"]]["name"]}</b>\n<i>{mark["name"]}</i>\nЗначение: {mark["mark"]}\nКоэффициент: {mark["weight"]}\nСредний балл: {unit_by_id[mark["unit_id"]]["average"]}'
                                 bot.send_message(user.id, msg, parse_mode="HTML")
                     user.last_checked_mark_time = marks[-1]["time"]
-    except telebot.apihelper.ApiException as exc:
-        print('bot was blocked by the user' in exc)
+    except telebot.apihelper.ApiException as e:
+        print('bot was blocked by the user' in str(e))
     except:
         bot.send_message('@eschool239boterrors', traceback.format_exc())
     time.sleep(0.5)
