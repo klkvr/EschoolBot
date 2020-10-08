@@ -13,7 +13,6 @@ users = get_all_users()
 for user_id in users:
     try:
         user = BotUser(410821501)
-        print(user.last_checked_mark_time)
         if user.logged_in:
             log_in_attempt = user.log_in()
             time.sleep(0.5)
@@ -28,12 +27,10 @@ for user_id in users:
                         unit_by_id[unit['unit_id']] = {'name': unit['unit_name'], 'average': unit['average']}
                     if user.last_checked_mark_time != -1:
                         for mark in marks:
-                            print(mark)
                             mark_unit = dict(unit_by_id[mark["unit_id"]])
                             if user.notify_type == 'good' and mark["mark"] not in "45":
                                 mark["mark"] = "🙁"
                                 mark_unit["average"] = "🙁"
-                            print(mark["time"], user.last_checked_mark_time)
                             if mark['time'] > user.last_checked_mark_time:
                                 msg = f'Новая оценка\n<b>{mark_unit["name"]}</b>\n<i>{mark["name"]}</i>\nЗначение: {mark["mark"]}\nКоэффициент: {mark["weight"]}\nСредний балл: {mark_unit["average"]}'
                                 if user.notify_type != 'no':
