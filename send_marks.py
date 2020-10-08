@@ -14,7 +14,6 @@ for user_id in users:
     try:
         user = BotUser(410821501)
         print(user.id)
-        print(user.notify_type)
         if user.logged_in:
             log_in_attempt = user.log_in()
             time.sleep(0.5)
@@ -36,7 +35,6 @@ for user_id in users:
                             if mark['time'] > user.last_checked_mark_time:
                                 msg = f'Новая оценка\n<b>{mark_unit["name"]}</b>\n<i>{mark["name"]}</i>\nЗначение: {mark["mark"]}\nКоэффициент: {mark["weight"]}\nСредний балл: {mark_unit["average"]}'
                                 if user.notify_type != 'no':
-                                    print(mark)
                                     try:
                                         bot.send_message(user.id, msg, parse_mode="HTML")
                                     except telebot.apihelper.ApiException as e:
