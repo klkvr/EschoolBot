@@ -14,6 +14,7 @@ for user_id in users:
     try:
         user = BotUser(410821501)
         print(user.id)
+        print(user.notify_type)
         if user.logged_in:
             log_in_attempt = user.log_in()
             time.sleep(0.5)
