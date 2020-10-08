@@ -12,7 +12,7 @@ bot = telebot.TeleBot(BOT_HASH)
 users = get_all_users()
 for user_id in users:
     try:
-        user = BotUser(410821501)
+        user = BotUser(user_id)
         if user.logged_in:
             log_in_attempt = user.log_in()
             time.sleep(0.5)
