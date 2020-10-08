@@ -33,6 +33,7 @@ for user_id in users:
                             if user.notify_type == 'good' and mark["mark"] not in "45":
                                 mark["mark"] = "🙁"
                                 mark_unit["average"] = "🙁"
+                            print(mark["time"], user.last_checked_mark_time)
                             if mark['time'] > user.last_checked_mark_time:
                                 msg = f'Новая оценка\n<b>{mark_unit["name"]}</b>\n<i>{mark["name"]}</i>\nЗначение: {mark["mark"]}\nКоэффициент: {mark["weight"]}\nСредний балл: {mark_unit["average"]}'
                                 if user.notify_type != 'no':
