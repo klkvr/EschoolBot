@@ -4,6 +4,7 @@ os.chdir('/home/ubuntu/EschoolBot')
 from helpers import *
 from models import *
 from config import *
+import telebot
 
 bot = telebot.TeleBot(BOT_HASH)
 TEST = 1
