@@ -29,7 +29,7 @@ for user_id in users:
                     if user.last_checked_mark_time != -1:
                         for mark in marks:
                             mark_unit = dict(unit_by_id[mark["unit_id"]])
-                            if user.notify_type == 'good' and mark["mark"] < 4:
+                            if user.notify_type == 'good' and mark["mark"] not in "45":
                                 mark["mark"] = "🙁"
                                 mark_unit["average"] = "🙁"
                             if mark['time'] > user.last_checked_mark_time:
