@@ -27,11 +27,12 @@ for user_id in users:
                         unit_by_id[unit['unit_id']] = {'name': unit['unit_name'], 'average': unit['average']}
                     if user.last_checked_mark_time != -1:
                         for mark in marks:
+                            mark_unit = dict(unit_by_id[mark["unit_id"]])
                             if user.notify_type == 'good' and mark["mark"] < 4:
                                 mark["mark"] = "🙁"
-                                mark["unit_id"]]["average"] = "🙁"
+                                mark_unit["average"] = "🙁"
                             if mark['time'] > user.last_checked_mark_time:
-                                msg = f'Новая оценка\n<b>{unit_by_id[mark["unit_id"]]["name"]}</b>\n<i>{mark["name"]}</i>\nЗначение: {mark["mark"]}\nКоэффициент: {mark["weight"]}\nСредний балл: {unit_by_id[mark["unit_id"]]["average"]}'
+                                msg = f'Новая оценка\n<b>{mark_unit["name"]}</b>\n<i>{mark["name"]}</i>\nЗначение: {mark["mark"]}\nКоэффициент: {mark["weight"]}\nСредний балл: {mark_unit["average"]}'
                                 if user.notify_type != 'no':
                                     try:
                                         bot.send_message(user.id, msg, parse_mode="HTML")
