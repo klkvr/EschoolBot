@@ -3,7 +3,9 @@ os.chdir('/home/ubuntu/EschoolBot')
 
 from helpers import *
 from models import *
+from config import *
 
+bot = telebot.TeleBot(BOT_HASH)
 TEST = 1
 msg = 'По многочисленным просьбам добавил функцию выбора оценок, о которых будут приходить уведомления. Можно получать все оценки, только хорошие, или не получать вообще.\n\nИспользуйте команду /notify_settings'
 
