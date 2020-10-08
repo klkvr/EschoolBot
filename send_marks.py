@@ -27,18 +27,22 @@ for user_id in users:
                         unit_by_id[unit['unit_id']] = {'name': unit['unit_name'], 'average': unit['average']}
                     if user.last_checked_mark_time != -1:
                         for mark in marks:
-                            user.last_checked_mark_time = marks[-1]["time"]
+                            if user.notify_type == 'good' and mark["mark"] < 4:
+                                mark["mark"] = "🙁"
+                                mark["unit_id"]]["average"] = "🙁"
                             if mark['time'] > user.last_checked_mark_time:
                                 msg = f'Новая оценка\n<b>{unit_by_id[mark["unit_id"]]["name"]}</b>\n<i>{mark["name"]}</i>\nЗначение: {mark["mark"]}\nКоэффициент: {mark["weight"]}\nСредний балл: {unit_by_id[mark["unit_id"]]["average"]}'
-                                try:
-                                    bot.send_message(user.id, msg, parse_mode="HTML")
-                                except telebot.apihelper.ApiException as e:
-                                    if 'bot was blocked by the user' in str(e):
-                                        print('blocked')
-                                    else:
+                                if user.notify_type != 'no':
+                                    try:
+                                        bot.send_message(user.id, msg, parse_mode="HTML")
+                                    except telebot.apihelper.ApiException as e:
+                                        if 'bot was blocked by the user' in str(e):
+                                            print('blocked')
+                                        else:
+                                            bot.send_message('@eschool239boterrors', traceback.format_exc())
+                                    except:
                                         bot.send_message('@eschool239boterrors', traceback.format_exc())
-                                except:
-                                    bot.send_message('@eschool239boterrors', traceback.format_exc())
+                    user.last_checked_mark_time = marks[-1]["time"]
     except:
         bot.send_message('@eschool239boterrors', traceback.format_exc())
     time.sleep(0.5)

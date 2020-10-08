@@ -25,6 +25,7 @@ class BotUser(object):
                 {'name': 'eschool_id', 'default': -1},
                 {'name': 'real_name', 'default': ''},
                 {'name': 'last_checked_mark_time', 'default': -1},
+                {'name': 'notify_type', 'default': 'all'},
                 ]
         for attr in attrs:
             if db.exists(f'user:{id}:{attr["name"]}'):

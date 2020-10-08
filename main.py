@@ -11,6 +11,26 @@ from templates import *
 
 bot = telebot.TeleBot(BOT_HASH)
 
+def send_notify_settings(user_id, message_id=-1, edit=0):
+    user = BotUser(user_id)
+    kb = types.InlineKeyboardMarkup(row_width=2)
+    rows = [[]]
+    cur = 0
+    for elem in notify_types:
+        if elem['val'] == user.notify_type:
+            rows[cur].append(types.InlineKeyboardButton(text=f'[{elem["name"]}]', callback_data=f"set_notify_type:{elem['val']}"))
+        else:
+            rows[cur].append(types.InlineKeyboardButton(text=elem["name"], callback_data=f"set_notify_type:{elem['val']}"))
+        if len(rows[cur]) == 2:
+            rows.append([])
+            cur += 1
+    for row in rows:
+        kb.add(*row)
+    if not edit:
+        bot.send_message(user.id, choose_notify_type, reply_markup=kb)
+    else:
+        bot.edit_message_text(chat_id=user.id, message_id=message_id, text=choose_notify_type, reply_markup=kb)
+
 
 @bot.message_handler(commands=['calculate'])
 def calculate(message):
@@ -99,7 +119,16 @@ def get_homework(message):
     except:
         bot.send_message('@eschool239boterrors', traceback.format_exc())
 
-
+@bot.message_handler(commands=['notify_settings'])
+def notify_settings(message):
+    try:
+        user = BotUser(message.from_user.id)
+        if not user.logged_in:
+            bot.send_message(user.id, log_in_first)
+        else:
+            send_notify_settings(user.id)
+    except:
+        bot.send_message('@eschool239boterrors', traceback.format_exc())
 @bot.message_handler(content_types=['text'])
 def text(message):
     try:
@@ -157,6 +186,9 @@ def inline(query):
                 kb = types.InlineKeyboardMarkup()
                 kb.add(types.InlineKeyboardButton(text=calculate_more, callback_data=f'calc:{unit_name}:{new_average}:{new_weight}'))
                 bot.edit_message_text(chat_id=user.id, message_id=message_id, text=calculate_result_format.format(chosen_mark=chosen_mark, chosen_weight=chosen_weight, unit_name=unit_name, prev_average=prev_average, new_average=new_average), reply_markup=kb, parse_mode="HTML")
+        elif 'set_notify_type' in data:
+            user.notify_type = data.split(':')[1]
+            send_notify_settings(user.id, message_id, 1)
         else:
             if "IGNORE" in data or "DAY" in data or "PREV-MONTH" in data or "NEXT-MONTH" in data:
                 date = process_calendar_selection(bot, query)

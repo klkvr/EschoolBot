@@ -22,3 +22,4 @@ weights_kb = types.InlineKeyboardMarkup(row_width=5)
 weights_kb.add(*[types.InlineKeyboardButton(text=weight, callback_data=f'calc_chosen_weight:{weight}') for weight in ['0.3', '0.5', '0.75',  '1.0', '1.25', '1.3', '1.35', '1.5', '1.75', '2.0', '2.5', '2.75', '3.0']])
 calculate_result_format = 'При получении оценки <b>{chosen_mark}</b> с коэффициентом <b>{chosen_weight}</b> средний балл по предмету <b>{unit_name}</b> изменится с <b>{prev_average}</b> на <b>{new_average}</b>'
 calculate_more = 'Добавить еще оценку'
+choose_notify_type = 'О каких оценках вы хотите получать уведомления?'
