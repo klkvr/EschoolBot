@@ -13,7 +13,10 @@ msg = 'Добавил функцию настройки оценок, о кот�
 if not TEST:
     users = get_all_users()
     for user_id in users:
-        bot.send_message(user_id, msg, parse_mode="HTML")
+        try:
+            bot.send_message(user_id, msg, parse_mode="HTML")
+        except:
+            pass
 else:
     bot.send_message(410821501, msg, parse_mode="HTML")
 
