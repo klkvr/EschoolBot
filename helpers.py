@@ -7,7 +7,7 @@ import redis
 from telebot import types
 
 def text_by_data(query):
-    reply_markup = query.message['reply_markup']['inline_keyboard']
+    reply_markup = query.message.json['reply_markup']['inline_keyboard']
     data = query.data
     for line in reply_markup:
         for elem in line:
