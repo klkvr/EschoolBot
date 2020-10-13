@@ -85,7 +85,7 @@ class BotUser(object):
             time.sleep(0.5 * (len(period) == 0))
         marks = []
         for elem in period:
-            if 'markVal' in elem:
+            if 'markVal' in elem and 'mktWt' in elem:
                 t = datetime.strptime(elem["markDate"], "%Y-%m-%dT%H:%M:%S").timestamp()
                 marks.append({'unit_id': elem['unitId'], 'mark': elem['markVal'], 'weight': elem['mktWt'], 'name': elem['lptName'], 'time': t})
         marks.sort(key=lambda mark: mark['time'])
