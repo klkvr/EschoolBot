@@ -163,10 +163,9 @@ def inline(query):
         data = query.data
         message_id = query.message.message_id
         if 'c:' in data:
-            print(text_by_data(query))
-            unit_name = data.split(':')[1]
-            average = float(data.split(':')[2])
-            weight = float(data.split(':')[3])
+            unit_name = text_by_data(query)
+            average = float(data.split(':')[1])
+            weight = float(data.split(':')[2])
             user.state = f'calculate_choosing_mark:{unit_name}:{average}:{weight}'
             bot.edit_message_text(chat_id=user.id, message_id=message_id, text=calculate_choose_mark_format.format(unit_name=unit_name, average=average), reply_markup=marks_kb, parse_mode="HTML")
         elif 'calc_chosen_mark:' in data:
