@@ -162,7 +162,7 @@ def inline(query):
         user = BotUser(query.from_user.id)
         data = query.data
         message_id = query.message.message_id
-        if 'calc:' in data:
+        if 'c:' in data:
             unit_name = data.split(':')[1]
             average = float(data.split(':')[2])
             weight = float(data.split(':')[3])
