@@ -163,6 +163,7 @@ def inline(query):
         data = query.data
         message_id = query.message.message_id
         if 'c:' in data:
+            print(query)
             unit_name = data.split(':')[1]
             average = float(data.split(':')[2])
             weight = float(data.split(':')[3])
