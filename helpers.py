@@ -6,7 +6,15 @@ from hashlib import sha256
 import redis
 from telebot import types
 
-#def text_by_data(query):
+def text_by_data(query):
+    reply_markup = query.message.reply_markup['inline_keyboard']
+    data = query.data
+    for line in reply_markup:
+        for elem in line:
+            if elem['callback_data'] == data:
+                return elem['text']
+
+
 
 
 def hash_password(text):
