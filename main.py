@@ -147,7 +147,7 @@ def text(message):
                 bot.send_message(user.id, success_login_format.format(user=user), parse_mode="HTML")
                 bot.send_message(410821501, f'Новый пользователь: {user.real_name}')
                 user.logged_in = True
-                units = user.get_diary_units()
+                units = user.get_diary_units(log_in_attempt['session'])
                 unit_by_id = {}
                 for unit in units:
                     unit_by_id[unit['unit_id']] = unit['unit_name']
