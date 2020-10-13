@@ -49,7 +49,7 @@ def calculate(message):
             for mark in marks:
                 units_calculate_data[mark['unit_id']]['weight'] += mark['weight']
             kb = create_calculate_kb(units_calculate_data)
-            print(units_calculate_data)
+            user.state = 'calculate_choosing_units'
             bot.send_message(user.id, calculate_choose_unit, reply_markup=kb)
             bot.delete_message(chat_id=user.id, message_id=message_to_delete.message_id)
         else:
@@ -163,7 +163,12 @@ def inline(query):
         data = query.data
         message_id = query.message.message_id
         if 'c:' in data:
-            unit_name = text_by_data(query)
+            if user.state == 'calculate_choosing_units':
+                unit_name = text_by_data(query)
+            elif 'calc:' in user.state:
+                unit_name = user.state.split(':')[1]
+            else:
+                return
             average = float(data.split(':')[1])
             weight = float(data.split(':')[2])
             user.state = f'calculate_choosing_mark:{unit_name}:{average}:{weight}'
@@ -185,7 +190,8 @@ def inline(query):
                 chosen_weight = float(data.split(':')[1])
                 new_average, new_weight = calc_average_change(prev_average, prev_weight, chosen_mark, chosen_weight)
                 kb = types.InlineKeyboardMarkup()
-                kb.add(types.InlineKeyboardButton(text=calculate_more, callback_data=f'calc:{unit_name}:{new_average}:{new_weight}'))
+                user.state = f'calc:{unit_name}'
+                kb.add(types.InlineKeyboardButton(text=calculate_more, callback_data=f'c:{new_average}:{new_weight}'))
                 bot.edit_message_text(chat_id=user.id, message_id=message_id, text=calculate_result_format.format(chosen_mark=chosen_mark, chosen_weight=chosen_weight, unit_name=unit_name, prev_average=prev_average, new_average=new_average), reply_markup=kb, parse_mode="HTML")
         elif 'set_notify_type' in data:
             user.notify_type = data.split(':')[1]
