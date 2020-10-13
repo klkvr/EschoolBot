@@ -6,8 +6,8 @@ from hashlib import sha256
 import redis
 from telebot import types
 
-def text_by_data(query):
-    
+#def text_by_data(query):
+
 
 def hash_password(text):
     return sha256((text).encode('utf-8')).hexdigest()
