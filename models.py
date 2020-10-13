@@ -68,7 +68,7 @@ class BotUser(object):
     def get_diary_units(self, s):
         marks = requests.get(f'https://app.eschool.center/ec-server/student/getDiaryUnits/?userId={self.eschool_id}&eiId={PERIOD}', cookies=s.cookies).json()
         marks = marks['result']
-        return_value = []
+        units = []
         for mark in marks:
             unit_name = mark['unitName']
             unit_id = mark['unitId']
@@ -76,8 +76,12 @@ class BotUser(object):
             total = mark.get('totalMark', '')
             if total == '':
                 total = str(round(average)) + '?'
-            return_value.append({'unit_name': unit_name, 'unit_id': unit_id, 'average': average, 'total': total})
-        return return_value
+            units.append({'unit_name': unit_name, 'unit_id': unit_id, 'average': average, 'total': total})
+        unit_by_id = {}
+        for unit in units:
+            unit_by_id[unit['unit_id']] = unit['unit_name']
+        self.units = unit_by_id
+        return units
     
     def get_marks(self, s):
         period = []

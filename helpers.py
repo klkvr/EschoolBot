@@ -31,10 +31,8 @@ def get_all_users():
 def create_calculate_kb(units_calculate_data):
     kb = types.InlineKeyboardMarkup(row_width=2)
     kb.add(*[types.InlineKeyboardButton(text=units_calculate_data[unit_id]['name'], 
-        callback_data=f'calc:{units_calculate_data[unit_id]["average"]:.4f}:{units_calculate_data[unit_id]["weight"]:.4f}')
+        callback_data=f'c:{unit_id}:{units_calculate_data[unit_id]["average"]:.4f}:{units_calculate_data[unit_id]["weight"]:.4f}')
             for unit_id in units_calculate_data])
-    for unit_id in units_calculate_data:
-        print(f'c:{unit_id}:{units_calculate_data[unit_id]["average"]:.4f}:{units_calculate_data[unit_id]["weight"]:.4f}')
     return kb
 
 def calc_average_change(prev_average, prev_weight, chosen_mark, chosen_weight):
