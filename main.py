@@ -49,6 +49,7 @@ def calculate(message):
             for mark in marks:
                 units_calculate_data[mark['unit_id']]['weight'] += mark['weight']
             kb = create_calculate_kb(units_calculate_data)
+            print(units_calculate_data)
             bot.send_message(user.id, calculate_choose_unit, reply_markup=kb)
             bot.delete_message(chat_id=user.id, message_id=message_to_delete.message_id)
         else:
