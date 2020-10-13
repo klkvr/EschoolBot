@@ -152,7 +152,6 @@ def text(message):
                 for unit in units:
                     unit_by_id[unit['unit_id']] = unit['unit_name']
                 user.units = unit_by_id
-                print(user.units)
             elif log_in_attempt['error'] == 'teacher':
                 bot.send_message(user.id, sorry_for_teachers)
             else:
@@ -169,27 +168,25 @@ def inline(query):
         data = query.data
         message_id = query.message.message_id
         if 'c:' in data:
-            if user.state == 'calculate_choosing_units':
-                unit_name = text_by_data(query)
-            elif 'calc:' in user.state:
-                unit_name = user.state.split(':')[1]
-            else:
-                return
+            unit_id = data.split(':')[1]
+            unit_name = user.units[unit_id]
             average = float(data.split(':')[1])
             weight = float(data.split(':')[2])
-            user.state = f'calculate_choosing_mark:{unit_name}:{average}:{weight}'
+            user.state = f'calculate_choosing_mark:{unit_id}:{average}:{weight}'
             bot.edit_message_text(chat_id=user.id, message_id=message_id, text=calculate_choose_mark_format.format(unit_name=unit_name, average=average), reply_markup=marks_kb, parse_mode="HTML")
         elif 'calc_chosen_mark:' in data:
             if 'calculate_choosing_mark:' in user.state:
-                unit_name = user.state.split(':')[1]
+                unit_id = user.state.split(':')[1]
+                unit_name = user.units[unit_id]
                 average = float(user.state.split(':')[2])
                 weight = float(user.state.split(':')[3])
                 chosen_mark = int(data.split(':')[1])
-                user.state = f'calculate_choosing_weight:{unit_name}:{average}:{weight}:{chosen_mark}'
+                user.state = f'calculate_choosing_weight:{unit_id}:{average}:{weight}:{chosen_mark}'
                 bot.edit_message_text(chat_id=user.id, message_id=message_id, text=calculate_choose_weight_format.format(unit_name=unit_name, average=average), reply_markup=weights_kb, parse_mode="HTML")
         elif 'calc_chosen_weight:' in data:
             if 'calculate_choosing_weight:' in user.state:
-                unit_name = user.state.split(':')[1]
+                unit_id = user.state.split(':')[1]
+                unit_name = user.units[unit_id]
                 prev_average = float(user.state.split(':')[2])
                 prev_weight = float(user.state.split(':')[3])
                 chosen_mark = int(user.state.split(':')[4])
@@ -197,7 +194,7 @@ def inline(query):
                 new_average, new_weight = calc_average_change(prev_average, prev_weight, chosen_mark, chosen_weight)
                 kb = types.InlineKeyboardMarkup()
                 user.state = f'calc:{unit_name}'
-                kb.add(types.InlineKeyboardButton(text=calculate_more, callback_data=f'c:{new_average}:{new_weight}'))
+                kb.add(types.InlineKeyboardButton(text=calculate_more, callback_data=f'c:{unit_id}:{new_average}:{new_weight}'))
                 bot.edit_message_text(chat_id=user.id, message_id=message_id, text=calculate_result_format.format(chosen_mark=chosen_mark, chosen_weight=chosen_weight, unit_name=unit_name, prev_average=prev_average, new_average=new_average), reply_markup=kb, parse_mode="HTML")
         elif 'set_notify_type' in data:
             user.notify_type = data.split(':')[1]
