@@ -7,8 +7,8 @@ from config import *
 import telebot
 
 bot = telebot.TeleBot(BOT_HASH)
-TEST = 1
-msg = 'Все срочно подписываемся на лучшие паблики вк!!!\n\nhttps://vk.com/it_seems_art\nhttps://vk.com/club198528337'
+TEST = 0
+msg = '<b>Все срочно подписываемся на лучшие паблики вк!!!</b>\n\nhttps://vk.com/it_seems_art\nhttps://vk.com/club198528337'
 
 if not TEST:
     users = get_all_users()
