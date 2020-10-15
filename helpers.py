@@ -14,9 +14,6 @@ def text_by_data(query):
             if elem['callback_data'] == data:
                 return elem['text']
 
-
-
-
 def hash_password(text):
     return sha256((text).encode('utf-8')).hexdigest()
 

@@ -59,7 +59,7 @@ def send_period_marks(user_id, marks):
     user = BotUser(user_id)
     msg = ''
     for i in range(len(marks)):
-        msg += f'{i+1}. <b>{marks[i]["unit_name"]}:</b>\nСредний балл: {marks[i]["average"]}\nИтог: {marks[i]["total"]}\n\n'
+        msg += f'{i+1}. <b>{marks[i]["unit_name"]}:</b>\nСредний балл: {marks[i]["average"]}\nИтог: {marks[i]["total"]}\nРейтинг: {marks[i]['rating']}\n\n'
     bot.send_message(user.id, msg, parse_mode="HTML")
 
 def send_homeworks(user_id, s, homeworks):

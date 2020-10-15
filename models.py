@@ -70,14 +70,16 @@ class BotUser(object):
         marks = marks['result']
         units = []
         for mark in marks:
-            print(mark)
+            rating = '?'
+            if 'rating' in mark:
+                rating = mark['rating']
             unit_name = mark['unitName']
             unit_id = mark['unitId']
             average = round(mark.get('overMark', 0), 2)
             total = mark.get('totalMark', '')
             if total == '':
                 total = str(round(average)) + '?'
-            units.append({'unit_name': unit_name, 'unit_id': unit_id, 'average': average, 'total': total})
+            units.append({'unit_name': unit_name, 'unit_id': unit_id, 'average': average, 'total': total, 'rating': rating})
         unit_by_id = {}
         for unit in units:
             unit_by_id[unit['unit_id']] = unit['unit_name']
