@@ -8,7 +8,7 @@ import telebot
 
 bot = telebot.TeleBot(BOT_HASH)
 TEST = 1
-msg = 'Все срочно подписываемся на лучшие паблики вк!!!\n\nhttps://vk.com/it_seems_art\nhttps://vk.com/club198528337\n\nИ на мой инстаграм instagram.com/klkvr'
+msg = 'Все срочно подписываемся на лучшие паблики вк!!!\n\nhttps://vk.com/it_seems_art\nhttps://vk.com/club198528337'
 
 if not TEST:
     users = get_all_users()
