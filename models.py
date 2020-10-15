@@ -70,6 +70,7 @@ class BotUser(object):
         marks = marks['result']
         units = []
         for mark in marks:
+            print(mark)
             unit_name = mark['unitName']
             unit_id = mark['unitId']
             average = round(mark.get('overMark', 0), 2)
