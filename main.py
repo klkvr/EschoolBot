@@ -202,6 +202,7 @@ def text(message):
 @bot.callback_query_handler(func=lambda call: True)
 def inline(query):
     try:
+        bot.answer_callback_query(query.callback_query_id)
         user = BotUser(query.from_user.id)
         data = query.data
         message_id = query.message.message_id
@@ -244,40 +245,46 @@ def inline(query):
                     if user.state == 'get_homework_choose_day':
                         user.state = 'none'
                         homework_day = int(date[1].timestamp())
-                        log_in_attempt = user.log_in()
                         ctime_day = time.ctime(homework_day).split()[:3]
                         read_day = WEEK[ctime_day[0]] + ', ' + ctime_day[2] + ' ' + MONTH[ctime_day[1]]
-                        msg = f'<b>Домашние задания на {read_day}:</b>'
-                        bot.edit_message_text(text=msg, chat_id=user.id, message_id=message_id, parse_mode="HTML")
+                        bot.edit_message_text(text="Получаю домашние задания...", chat_id=user.id, message_id=message_id, parse_mode="HTML")
+                        log_in_attempt = user.log_in()
                         if log_in_attempt['logged_in']:
                             s = log_in_attempt['session']
-                            send_homeworks(user.id, s, user.get_homeworks(s, homework_day))
+                            homeworks = user.get_homeworks(s, homework_day)
+                            msg = f'<b>Домашние задания на {read_day}:</b>'
+                            bot.edit_message_text(text=msg, chat_id=user.id, message_id=message_id, parse_mode="HTML")
+                            send_homeworks(user.id, s, homeworks)
                         else:
                             bot.send_message(user.id, error_logging_in)
                     elif user.state == 'get_conferences_choose_day':
                         user.state = 'none'
                         conferences_day = int(date[1].timestamp())
-                        log_in_attempt = user.log_in()
                         ctime_day = time.ctime(conferences_day).split()[:3]
                         read_day = WEEK[ctime_day[0]] + ', ' + ctime_day[2] + ' ' + MONTH[ctime_day[1]]
-                        msg = f'<b>Конференции на {read_day}:</b>'
-                        bot.edit_message_text(text=msg, chat_id=user.id, message_id=message_id, parse_mode="HTML")
+                        bot.edit_message_text(text="Получаю конференции...", chat_id=user.id, message_id=message_id, parse_mode="HTML")
+                        log_in_attempt = user.log_in()
                         if log_in_attempt['logged_in']:
                             s = log_in_attempt['session']
-                            send_conferences(user.id, s, user.get_conferences(s, conferences_day))
+                            conferences = user.get_conferences(s, conferences_day)
+                            msg = f'<b>Конференции на {read_day}:</b>'
+                            bot.edit_message_text(text=msg, chat_id=user.id, message_id=message_id, parse_mode="HTML")
+                            send_homeworks(user.id, s, conferences)
                         else:
                             bot.send_message(user.id, error_logging_in)
                     elif user.state == 'get_lessons_choose_day':
                         user.state = 'none'
                         lessons_day = int(date[1].timestamp())
-                        log_in_attempt = user.log_in()
                         ctime_day = time.ctime(lessons_day).split()[:3]
                         read_day = WEEK[ctime_day[0]] + ', ' + ctime_day[2] + ' ' + MONTH[ctime_day[1]]
-                        msg = f'<b>Расписание на {read_day}:</b>'
-                        bot.edit_message_text(text=msg, chat_id=user.id, message_id=message_id, parse_mode="HTML")
+                        bot.edit_message_text(text="Получаю расписание...", chat_id=user.id, message_id=message_id, parse_mode="HTML")
+                        log_in_attempt = user.log_in()
                         if log_in_attempt['logged_in']:
                             s = log_in_attempt['session']
-                            send_lessons(user.id, s, user.get_lessons(s, lessons_day))
+                            lessons = user.get_lessons(s, lessons_day)
+                            msg = f'<b>Расписание на {read_day}:</b>'
+                            bot.edit_message_text(text=msg, chat_id=user.id, message_id=message_id, parse_mode="HTML")
+                            send_lessons(user.id, s, lessons)
                         else:
                             bot.send_message(user.id, error_logging_in)
         
