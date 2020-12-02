@@ -120,6 +120,7 @@ class BotUser(object):
         for elem in diary:
             if 'meet' in elem:
                 conferences.append({'unit': elem['unit']['name'], 'text': elem['meet']['inviteText']})
+        print(conferences)
         return conferences
 
 
