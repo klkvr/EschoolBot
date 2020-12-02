@@ -76,7 +76,7 @@ def send_homeworks(user_id, s, homeworks):
     else:
         bot.send_message(user.id, no_homeworks)
 
-def send_conferences(user_id, s, homeworks):
+def send_conferences(user_id, s, conferences):
     user = BotUser(user_id)
     if len(conferences):
         for conference in conferences:
