@@ -271,7 +271,7 @@ def inline(query):
                         user.state = 'none'
                         lessons_day = int(date[1].timestamp())
                         log_in_attempt = user.log_in()
-                        ctime_day = time.ctime(conferences_day).split()[:3]
+                        ctime_day = time.ctime(lessons_day).split()[:3]
                         read_day = WEEK[ctime_day[0]] + ', ' + ctime_day[2] + ' ' + MONTH[ctime_day[1]]
                         msg = f'<b>Расписание на {read_day}:</b>'
                         bot.edit_message_text(text=msg, chat_id=user.id, message_id=message_id, parse_mode="HTML")
