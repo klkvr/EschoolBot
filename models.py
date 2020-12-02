@@ -119,8 +119,8 @@ class BotUser(object):
         conferences = []
         for elem in diary:
             if 'meet' in elem and 'inviteText' in elem['meet']:
+                text = elem['meet']['inviteText']
                 if 'https:' in text:
-                    text = elem['meet']['inviteText']
                     text = text[text.find('https:'):]
                     text = text[:text.find('\n')]
                 conference = {'unit': elem['unit']['name'], 'link': text}
