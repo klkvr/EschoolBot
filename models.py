@@ -126,7 +126,17 @@ class BotUser(object):
                 conference = {'unit': elem['unit']['name'], 'link': text}
                 if conference not in conferences:
                     conferences.append(conference)
-        print(conferences)
         return conferences
+    
+    def get_lessons(self, s, lessons_day):
+        start_date = lessons_day * 1000
+        end_date = start_date + 86400 * 1000 - 1
+        diary = requests.get(f'https://app.eschool.center/ec-server/student/diary?userId={self.eschool_id}&d1={start_date}&d2={end_date}', cookies=s.cookies).json()['lesson']
+        lessons = [''] * 8
+        for elem in diary:
+            num = elem['numInday']
+            unit = elem['unit']['name']
+            lessons[num] = unit
+        return lessons
 
 

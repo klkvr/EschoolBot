@@ -13,6 +13,7 @@ getting_marks = "Получаю оценки..."
 logging_in = "Вхожу в аккаунт..."
 choose_day_to_get_homework = 'Выбери день, на который ты хочешь получить домашние задания'
 choose_day_to_get_conferences = 'Выбери день, на который ты хочешь получить конференции'
+choose_day_to_get_conferences = 'Выбери день, на который ты хочешь получить расписание'
 no_homeworks = 'На этот день нет домашних заданий'
 no_conferences = 'На этот день нет конференций'
 calculate_choose_unit = 'Выбери предмет'
