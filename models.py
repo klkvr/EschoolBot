@@ -118,7 +118,7 @@ class BotUser(object):
         diary = requests.get(f'https://app.eschool.center/ec-server/student/diary?userId={self.eschool_id}&d1={start_date}&d2={end_date}', cookies=s.cookies).json()['lesson']
         conferences = []
         for elem in diary:
-            if 'meet' in elem:
+            if 'meet' in elem and 'inviteText' in elem['meet']:
                 print(elem['meet'])
                 conferences.append({'unit': elem['unit']['name'], 'text': elem['meet']['inviteText']})
         print(conferences)
