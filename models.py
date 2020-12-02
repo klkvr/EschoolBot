@@ -120,7 +120,10 @@ class BotUser(object):
         for elem in diary:
             if 'meet' in elem and 'inviteText' in elem['meet']:
                 print(elem['meet'])
-                conferences.append({'unit': elem['unit']['name'], 'text': elem['meet']['inviteText']})
+                text = elem['meet']['inviteText']
+                text = text[text.find('https:'):]
+                text = text[:text.find('\n')]
+                conferences.append({'unit': elem['unit']['name'], 'link': text})
         print(conferences)
         return conferences
 
