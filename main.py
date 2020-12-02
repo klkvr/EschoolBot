@@ -244,7 +244,6 @@ def inline(query):
                         read_day = WEEK[ctime_day[0]] + ', ' + ctime_day[2] + ' ' + MONTH[ctime_day[1]]
                         msg = f'<b>Конференции на {read_day}:</b>'
                         bot.edit_message_text(text=msg, chat_id=user.id, message_id=message_id, parse_mode="HTML")
-                        print(log_in_attempt)
                         if log_in_attempt['logged_in']:
                             s = log_in_attempt['session']
                             send_conferences(user.id, s, user.get_conferences(s, conferences_day))
