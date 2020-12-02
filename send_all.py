@@ -8,8 +8,7 @@ import telebot
 
 bot = telebot.TeleBot(BOT_HASH)
 TEST = 0
-msg = '<b>Все срочно подписываемся на лучшие паблики вк!!!</b>\n\nhttps://vk.com/it_seems_art\nhttps://vk.com/club198528337'
-
+msg = 'на аве мой краш'
 if not TEST:
     users = get_all_users()
     for user_id in users:
