@@ -202,8 +202,7 @@ def text(message):
 @bot.callback_query_handler(func=lambda call: True)
 def inline(query):
     try:
-        print(query)
-        bot.answer_callback_query(query.callback_query_id)
+        bot.answer_callback_query(query.id)
         user = BotUser(query.from_user.id)
         data = query.data
         message_id = query.message.message_id
