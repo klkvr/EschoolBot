@@ -134,10 +134,10 @@ class BotUser(object):
         diary = requests.get(f'https://app.eschool.center/ec-server/student/diary?userId={self.eschool_id}&d1={start_date}&d2={end_date}', cookies=s.cookies).json()['lesson']
         lessons = [''] * 8
         for elem in diary:
-            print(elem)
             num = elem['numInDay']
             unit = elem['unit']['name']
-            lessons[num] = unit
+            if lessons[num] == '':
+                lessons[num] = unit
         return lessons
 
 
