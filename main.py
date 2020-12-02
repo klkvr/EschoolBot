@@ -269,7 +269,7 @@ def inline(query):
                             conferences = user.get_conferences(s, conferences_day)
                             msg = f'<b>Конференции на {read_day}:</b>'
                             bot.edit_message_text(text=msg, chat_id=user.id, message_id=message_id, parse_mode="HTML")
-                            send_homeworks(user.id, s, conferences)
+                            send_conferences(user.id, s, conferences)
                         else:
                             bot.send_message(user.id, error_logging_in)
                     elif user.state == 'get_lessons_choose_day':
