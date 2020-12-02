@@ -111,5 +111,15 @@ class BotUser(object):
                     for variant in p['variant']:
                         homeworks.append({'unit': unit, 'text': delete_html(html2text(variant.get('text', ''), bodywidth=0)), 'files': [{'id': f['id'], 'name': f['fileName']} for f in variant['file']]})
         return homeworks
+    
+    def get_conferences(self, s, conferences_day):
+        start_date = conferences_day * 1000
+        end_date = start_date + 86400 * 1000 - 1
+        diary = requests.get(f'https://app.eschool.center/ec-server/student/diary?userId={self.eschool_id}&d1={start_date}&d2={end_date}', cookies=s.cookies).json()['lesson']
+        conferences = []
+        for elem in diary:
+            if 'meet' in elem:
+                conferences.append({'unit': elem['unit']['name'], 'text': elem['meet']['inviteText']})
+        return conferences
 
 

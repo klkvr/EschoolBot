@@ -12,7 +12,9 @@ no_marks = "У тебя пока нет оценок"
 getting_marks = "Получаю оценки..."
 logging_in = "Вхожу в аккаунт..."
 choose_day_to_get_homework = 'Выбери день, на который ты хочешь получить домашние задания'
+choose_day_to_get_conferences = 'Выбери день, на который ты хочешь получить конференции'
 no_homeworks = 'На этот день нет домашних заданий'
+no_conferences = 'На этот день нет конференций'
 calculate_choose_unit = 'Выбери предмет'
 calculate_choose_mark_format = 'Текущий балл по предмету <b>{unit_name}:</b> {average}\n\nВыбери оценку, чтобы узнать изменение среднего балла (используйте отрицательные оценки для проверки балла при удалении оценок)'
 marks_kb = types.InlineKeyboardMarkup(row_width=5)

@@ -76,6 +76,16 @@ def send_homeworks(user_id, s, homeworks):
     else:
         bot.send_message(user.id, no_homeworks)
 
+def send_conferences(user_id, s, homeworks):
+    user = BotUser(user_id)
+    if len(conferences):
+        for conference in conferences:
+            msg = f'<b>{conference["unit"]}</b>\n\n{conference["text"]}'
+            bot.send_message(user.id, msg, parse_mode="HTML")
+    else:
+        bot.send_message(user.id, no_conferences)
+
+
 
 @bot.message_handler(commands=['start', 'help'])
 def start(message):
@@ -117,6 +127,19 @@ def get_homework(message):
             kb = create_calendar()
             user.state = 'get_homework_choose_day'
             bot.send_message(user.id, choose_day_to_get_homework, reply_markup=kb)
+    except:
+        bot.send_message('@eschool239boterrors', traceback.format_exc())
+
+@bot.message_handler(commands=['get_conferences'])
+def get_conferences(message):
+    try:
+        user = BotUser(message.from_user.id)
+        if not user.logged_in:
+            bot.send_message(user.id, log_in_first)
+        else:
+            kb = create_calendar()
+            user.state = 'get_conferences_choose_day'
+            bot.send_message(user.id, choose_day_to_get_conferences, reply_markup=kb)
     except:
         bot.send_message('@eschool239boterrors', traceback.format_exc())
 
@@ -210,6 +233,19 @@ def inline(query):
                         if log_in_attempt['logged_in']:
                             s = log_in_attempt['session']
                             send_homeworks(user.id, s, user.get_homeworks(s, homework_day))
+                        else:
+                            bot.send_message(user.id, error_logging_in)
+                    elif user.state == 'get_conferences_choose_day':
+                        user.state = 'none'
+                        conferences_day = int(date[1].timestamp())
+                        log_in_attempt = user.log_in()
+                        ctime_day = time.ctime(conferences_day).split()[:3]
+                        read_day = WEEK[ctime_day[0]] + ', ' + ctime_day[2] + ' ' + MONTH[ctime_day[1]]
+                        msg = f'<b>Конференции на {read_day}:</b>'
+                        bot.edit_message_text(text=msg, chat_id=user.id, message_id=message_id, parse_mode="HTML")
+                        if log_in_attempt['logged_in']:
+                            s = log_in_attempt['session']
+                            send_conferences(user.id, s, user.get_conferences(s, conferences_day))
                         else:
                             bot.send_message(user.id, error_logging_in)
         
