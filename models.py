@@ -123,7 +123,9 @@ class BotUser(object):
                 text = elem['meet']['inviteText']
                 text = text[text.find('https:'):]
                 text = text[:text.find('\n')]
-                conferences.append({'unit': elem['unit']['name'], 'link': text})
+                conference = {'unit': elem['unit']['name'], 'link': text}
+                if conference not in conferences:
+                    conferences.append(conference)
         print(conferences)
         return conferences
 

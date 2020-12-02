@@ -82,7 +82,7 @@ def send_conferences(user_id, s, conferences):
     if len(conferences):
         for conference in conferences:
             msg = f'<b>{conference["unit"]}</b>\n\n{conference["link"]}'
-            bot.send_message(user.id, msg, parse_mode="HTML")
+            bot.send_message(user.id, msg, parse_mode="HTML", disable_web_page_preview=True)
     else:
         bot.send_message(user.id, no_conferences)
 
