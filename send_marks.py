@@ -32,7 +32,7 @@ for user_id in users:
                                 mark["mark"] = "🙁"
                                 mark_unit["average"] = "🙁"
                             if mark['time'] > user.last_checked_mark_time:
-                                msg = f'Новая оценка\n<b>{mark_unit["name"]}</b>\n<i>{mark["name"]}</i>\nЗначение: {mark["mark"]}\nКоэффициент: {mark["weight"]}\nСредний балл: {mark_unit["average"]}'
+                                msg = f'Новая оценка\n<b>{mark_unit["name"]}</b>\n<i>{mark["name"]}</i>\nЗначение: {mark["mark"]}\nКоэффициент: {mark["weight"]}\nСредний балл: {mark_unit["average"]}\nРейтинг: {mark_unit["rating"]}'
                                 if user.notify_type != 'no':
                                     try:
                                         bot.send_message(user.id, msg, parse_mode="HTML")
