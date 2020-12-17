@@ -139,5 +139,9 @@ class BotUser(object):
             if lessons[num] == '':
                 lessons[num] = unit
         return lessons
-
+    def get_class(self, s):
+        profile = s.get(f'https://app.eschool.center/ec-server/profile/22665').json()
+        moves = profile['result']['movements']['clazz']
+        moves.sort(key=lambda x:int(x['parallel']))
+        return moves[-1]['className']
 
