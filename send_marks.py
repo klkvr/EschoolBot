@@ -24,7 +24,7 @@ for user_id in users:
                     units = user.get_diary_units(s)
                     unit_by_id = {}
                     for unit in units:
-                        unit_by_id[unit['unit_id']] = {'name': unit['unit_name'], 'average': unit['average']}
+                        unit_by_id[unit['unit_id']] = {'name': unit['unit_name'], 'average': unit['average'], 'rating': unit['rating']}
                     if user.last_checked_mark_time != -1:
                         for mark in marks:
                             mark_unit = dict(unit_by_id[mark["unit_id"]])
