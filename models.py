@@ -140,8 +140,8 @@ class BotUser(object):
                 lessons[num] = unit
         return lessons
     def get_class(self, s):
-        profile = s.get(f'https://app.eschool.center/ec-server/profile/22665').json()
-        moves = profile['result']['movements']['clazz']
-        moves.sort(key=lambda x:int(x['parallel']))
-        return moves[-1]['className']
+        groups = s.get(f'https://app.eschool.center/ec-server/usr/groupByUser?userId={self.eschool_id}').json()
+        for group in groups:
+            if group['groupTypeName'] == "Классы школы":
+                return group["groupName"]
 
