@@ -26,7 +26,8 @@ class BotUser(object):
                 {'name': 'real_name', 'default': ''},
                 {'name': 'last_checked_mark_time', 'default': -1},
                 {'name': 'notify_type', 'default': 'all'},
-                {'name': 'units', 'default': {}}
+                {'name': 'units', 'default': {}},
+                {'name': 'prsId', 'default': -1},
                 ]
         for attr in attrs:
             if db.exists(f'user:{id}:{attr["name"]}'):
@@ -48,6 +49,7 @@ class BotUser(object):
             if save_name:
                 name = requests.get('https://app.eschool.center/ec-server/state', cookies=s.cookies).json()['user']['currentPosition']
                 self.real_name = name['prsFio']
+                self.prsId = name['prsId']
                 if name['posName'] == 'Родитель':
                     child = requests.get(f'https://app.eschool.center/ec-server/profile/{name["userId"]}/children', cookies=s.cookies).json()[0]
                     self.eschool_id = int(child['userId'])
@@ -140,8 +142,7 @@ class BotUser(object):
                 lessons[num] = unit
         return lessons
     def get_class(self, s):
-        groups = s.get(f'https://app.eschool.center/ec-server/usr/groupByUser?dt={int(time.time())*1000}&userId={self.eschool_id}').json()
-        for group in groups:
-            if 'groupTypeName' in group and group['groupTypeName'] in ["Классы школы", 'School classes']:
-                return group["groupName"]
-
+        profile = s.get(f'https://app.eschool.center/ec-server/profile/{self.prsId}').json()['result']
+        classes = profile['movements']['clazz']
+        classes.sort(key=lambda x:x['endDate'])
+        return classes[-1]['className']
