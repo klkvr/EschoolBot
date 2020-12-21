@@ -140,7 +140,7 @@ class BotUser(object):
                 lessons[num] = unit
         return lessons
     def get_class(self, s):
-        groups = s.get(f'https://app.eschool.center/ec-server/usr/groupByUser?userId={self.eschool_id}').json()
+        groups = s.get(f'https://app.eschool.center/ec-server/usr/groupByUser?dt={int(time.time())*1000}&userId={self.eschool_id}').json()
         for group in groups:
             if 'groupTypeName' in group and group['groupTypeName'] in ["Классы школы", 'School classes']:
                 return group["groupName"]
