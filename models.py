@@ -142,6 +142,6 @@ class BotUser(object):
     def get_class(self, s):
         groups = s.get(f'https://app.eschool.center/ec-server/usr/groupByUser?userId={self.eschool_id}').json()
         for group in groups:
-            if 'groupTypeName' in group and group['groupTypeName'] == "Классы школы":
+            if 'groupTypeName' in group and group['groupTypeName'] in ["Классы школы", 'School classes']:
                 return group["groupName"]
 
