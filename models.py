@@ -52,6 +52,7 @@ class BotUser(object):
                 self.prsId = name['prsId']
                 if name['posName'] == 'Родитель':
                     child = requests.get(f'https://app.eschool.center/ec-server/profile/{name["userId"]}/children', cookies=s.cookies).json()[0]
+                    print(child)
                     self.eschool_id = int(child['userId'])
                 elif name['posName'] == 'Ученик':
                     self.eschool_id = int(name['userId'])
