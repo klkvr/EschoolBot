@@ -28,6 +28,7 @@ class BotUser(object):
                 {'name': 'notify_type', 'default': 'all'},
                 {'name': 'units', 'default': {}},
                 {'name': 'prsId', 'default': -1},
+                {'name': 'user_type', 'default': None},
                 ]
         for attr in attrs:
             if db.exists(f'user:{id}:{attr["name"]}'):
@@ -49,13 +50,14 @@ class BotUser(object):
             if save_name:
                 name = requests.get('https://app.eschool.center/ec-server/state', cookies=s.cookies).json()['user']['currentPosition']
                 self.real_name = name['prsFio']
-                self.prsId = name['prsId']
+                self.user_type = name['posName']
                 if name['posName'] == 'Родитель':
                     child = requests.get(f'https://app.eschool.center/ec-server/profile/{name["userId"]}/children', cookies=s.cookies).json()[0]
-                    print(child)
+                    self.prsId = int(child['prsId'])
                     self.eschool_id = int(child['userId'])
                 elif name['posName'] == 'Ученик':
                     self.eschool_id = int(name['userId'])
+                    self.prsId = int(name['prsId'])
                 else:
                     response['logged_in'] = False
                     response['error'] = 'teacher'
