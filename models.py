@@ -13,7 +13,6 @@ from datetime import datetime
 from config import *
 
 db = redis.Redis('localhost', decode_responses=True, db=REDIS_DB)
-
 class BotUser(object):
     def __init__(self, id):
         self.id = id
@@ -29,6 +28,8 @@ class BotUser(object):
                 {'name': 'units', 'default': {}},
                 {'name': 'prsId', 'default': -1},
                 {'name': 'user_type', 'default': None},
+                {'name': 'tg_name', 'default': None},
+                {'name': 'tg_username', 'default': None},
                 ]
         for attr in attrs:
             if db.exists(f'user:{id}:{attr["name"]}'):
@@ -149,3 +150,17 @@ class BotUser(object):
         classes = profile['movements']['clazz']
         classes.sort(key=lambda x:x['endDate'])
         return classes[-1]['className']
+    def did_something(self, message):
+        name = ''
+        if message.from_user.first_name != None:
+            name += message.from_user.first_name + ' '
+        if message.from_user.last_name != None:
+            name += message.from_user.last_name
+        self.tg_name = name
+        if message.from_user.username != None:
+            self.tg_username = message.from_user.username.lower()
+    def get_link(self):
+        if self.tg_username != None:
+            return f'<a href="tg://user?id={self.id}">@{self.tg_username}</a>'
+        else:
+            return f'<a href="tg://user?id={self.id}">{self.tg_name}</a>'

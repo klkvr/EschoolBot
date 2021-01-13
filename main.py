@@ -11,6 +11,8 @@ from templates import *
 
 bot = telebot.TeleBot(BOT_HASH)
 
+async def send_log(user, text):
+    await bot.send_message(LOG_CHANNEL, f"{user.get_link()}\n\n{text}", parse_mode="HTML")
 def send_notify_settings(user_id, message_id=-1, edit=0):
     user = BotUser(user_id)
     kb = types.InlineKeyboardMarkup(row_width=2)
@@ -35,6 +37,8 @@ def send_notify_settings(user_id, message_id=-1, edit=0):
 @bot.message_handler(commands=['calculate'])
 def calculate(message):
     user = BotUser(message.from_user.id)
+    user.did_something(message)
+    await send_log(user, message.text)
     if not user.logged_in:
         bot.send_message(user.id, log_in_first)
     else:
@@ -96,12 +100,16 @@ def send_lessons(user_id, s, lessons):
 @bot.message_handler(commands=['start', 'help'])
 def start(message):
     user = BotUser(message.from_user.id)
+    user.did_something(message)
+    await send_log(user, message.text)
     user.state = 'none'
     bot.send_message(user.id, start_message, parse_mode="HTML")
 
 @bot.message_handler(commands=['set_account'])
 def set_account(message):
     user = BotUser(message.from_user.id)
+    user.did_something(message)
+    await send_log(user, message.text)
     bot.send_message(user.id, enter_login)
     user.state = 'enter_login'
 
@@ -109,6 +117,8 @@ def set_account(message):
 def get_marks(message):
     try:
         user = BotUser(message.from_user.id)
+        user.did_something(message)
+        await send_log(user, message.text)
         if not user.logged_in:
             bot.send_message(user.id, log_in_first)
         else:
@@ -127,6 +137,8 @@ def get_marks(message):
 def get_homework(message):
     try:
         user = BotUser(message.from_user.id)
+        user.did_something(message)
+        await send_log(user, message.text)
         if not user.logged_in:
             bot.send_message(user.id, log_in_first)
         else:
@@ -140,6 +152,8 @@ def get_homework(message):
 def get_conferences(message):
     try:
         user = BotUser(message.from_user.id)
+        user.did_something(message)
+        await send_log(user, message.text)
         if not user.logged_in:
             bot.send_message(user.id, log_in_first)
         else:
@@ -153,6 +167,8 @@ def get_conferences(message):
 def get_lessons(message):
     try:
         user = BotUser(message.from_user.id)
+        user.did_something(message)
+        await send_log(user, message.text)
         if not user.logged_in:
             bot.send_message(user.id, log_in_first)
         else:
@@ -166,6 +182,8 @@ def get_lessons(message):
 def notify_settings(message):
     try:
         user = BotUser(message.from_user.id)
+        user.did_something(message)
+        await send_log(user, message.text)
         if not user.logged_in:
             bot.send_message(user.id, log_in_first)
         else:
